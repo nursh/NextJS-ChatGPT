@@ -1,6 +1,6 @@
 "use server";
 import OpenAI from "openai";
-import { getServerSession } from "next-auth";
+import { auth } from "@/auth";
 import { createChat, updateChat } from "@/db";
 
 const openai = new OpenAI({
@@ -17,7 +17,10 @@ export async function getCompletion(
 ) {
   const response = await openai.chat.completions.create({
     model: "gpt-4o-mini",
-    messages: messageHistory,
+    messages: messageHistory.map((message) => ({
+      role: message.role,
+      content: message.content,
+    })),
   });
 
   const messages = [
@@ -28,7 +31,7 @@ export async function getCompletion(
     },
   ];
 
-  const session = await getServerSession();
+  const session = await auth();
   let chatId = id;
   if (!chatId) {
     chatId = await createChat(
