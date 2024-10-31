@@ -2,6 +2,8 @@ import { auth } from "@/auth";
 
 import { Separator } from "@/components/ui/separator";
 import Chat from "@/app/components/Chat";
+import { Suspense } from "react";
+import PreviousChats from "./components/PreviousChats";
 
 
 export default async function Home() {
@@ -12,6 +14,9 @@ export default async function Home() {
       {!session?.user?.email && <div>You need to log in to use this chat.</div>}
       {session?.user?.email && (
         <div>
+          <Suspense fallback={<div>Loading Previous Chats</div>}>
+            <PreviousChats />
+          </Suspense>
           <Separator className="my-5" />
           <Chat />
         </div>
