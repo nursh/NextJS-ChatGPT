@@ -17,6 +17,7 @@ export default async function Home() {
           <Suspense fallback={<div>Loading Previous Chats</div>}>
             <PreviousChats />
           </Suspense>
+          <h4 className="mt-5 text-2xl font-bold">New Chat Session</h4>
           <Separator className="my-5" />
           <Chat />
         </div>

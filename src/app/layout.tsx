@@ -22,10 +22,14 @@ export const metadata: Metadata = {
   description: "ChatGPT brought to you by NextJS",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function RootLayout({
   children,
+  chats,
 }: Readonly<{
   children: React.ReactNode;
+  chats: React.ReactNode;
 }>) {
 
   const session = await auth();
@@ -57,12 +61,13 @@ export default async function RootLayout({
                 }}
                 onSignOut={async () => {
                   "use server";
-                  await signOut();
+                  await signOut({ redirectTo: '/', redirect: true });
                 }}
               />
             </div>
           </header>
           <div className="flex flex-col md:flex-row">
+            {chats}
             <div className="flex-grow">{children}</div>
           </div>
         </body>
